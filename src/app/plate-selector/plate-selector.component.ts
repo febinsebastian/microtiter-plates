@@ -8,7 +8,6 @@ import { NgForm, NgModel } from '@angular/forms';
   styleUrls: ['./plate-selector.component.css']
 })
 export class PlateSelectorComponent implements OnInit {
-
   
   wellsArrangement: {[key: number]: {[key:string]: number}} = {
     6: {row: 2, column: 3},
@@ -18,6 +17,7 @@ export class PlateSelectorComponent implements OnInit {
     96: {row: 8, column: 12},
     384: {row: 16, column: 24},
   }
+
   @Input() wells:number = 96;
   @ViewChild('columns') columnsInput!: NgModel;
 
@@ -42,8 +42,8 @@ export class PlateSelectorComponent implements OnInit {
         let end = Number(column[i].split("-")[1]);
         let numbers = this.range(start,end);
         selectedColumns.push(...numbers);
-        //this.map[start] = {isRange: true, endNum: end}
-        numbers.map(n => {this.map[n] = {isRange: true, endNum: end};});
+        //this.map[start] = {isRange: true, endColumn: end}
+        numbers.map(n => {this.map[n] = {isRange: true, endColumn: end};});
         continue;
       }
       this.map[column[i]] = {isRange: false};
@@ -52,7 +52,6 @@ export class PlateSelectorComponent implements OnInit {
     if(this.hasDuplicates(selectedColumns)){
       this.inputError = true;
       this.errorMessage = "Duplicate inputs";
-      this.columnsInput.control.setErrors({"erro":true});
     }else if(this.hasVaildInputs(selectedColumns)){
       this.inputError = true;
       this.errorMessage = "Input values must be between 0 and number of columns";
@@ -70,7 +69,7 @@ export class PlateSelectorComponent implements OnInit {
       let element = sortArray[i]
       if(this.map[element] && this.map[element].isRange){
         let start = element;
-        let end:any = this.map[element].endNum;
+        let end:any = this.map[element].endColumn;
         sortArray.splice(i,(end-start))
         if(start == end){
           result.push(String(start));
@@ -106,24 +105,24 @@ export class PlateSelectorComponent implements OnInit {
     let updateEndColumn = false;
     let selectedColumnEnd;
     if(this.map[selectedColumn] && this.map[selectedColumn].isRange){
-      let endNum = this.map[selectedColumn].endNum;
+      let endColumn = this.map[selectedColumn].endColumn;
       let nextColumn = this.selectedColumns[index+1];
-      selectedColumnEnd = this.map[selectedColumn].endNum;
+      selectedColumnEnd = this.map[selectedColumn].endColumn;
       for (let key in this.map) {
         if(selectedColumn == Number(key)){
-          this.map[nextColumn] = {isRange:true, endNum: endNum}
+          this.map[nextColumn] = {isRange:true, endColumn: endColumn}
           break;
         }else if(selectedColumn >= Number(key)){
           updateEndColumn = true;
-          if(endNum == nextColumn && selectedColumn != endNum) {
+          if(endColumn == nextColumn && selectedColumn != endColumn) {
             this.map[nextColumn] = {isRange:false};
             break;
-          }else if(selectedColumn == endNum){break;}
-          else if(selectedColumn < endNum){
-            this.map[nextColumn] = {isRange:true, endNum: selectedColumnEnd};
+          }else if(selectedColumn == endColumn){break;}
+          else if(selectedColumn < endColumn){
+            this.map[nextColumn] = {isRange:true, endColumn: selectedColumnEnd};
           }else{
             updateEndColumn = false;
-            this.map[nextColumn] = {isRange:true, endNum: endNum};
+            this.map[nextColumn] = {isRange:true, endColumn: endColumn};
           }
           break
         }
@@ -138,8 +137,8 @@ export class PlateSelectorComponent implements OnInit {
     }
     if(updateEndColumn){
       for (let i=index-1; i>=0; i--) {
-        if(this.map[this.selectedColumns[i]].isRange && this.map[this.selectedColumns[i]].endNum == selectedColumnEnd){
-          this.map[this.selectedColumns[i]] = {isRange:true, endNum: this.selectedColumns[index-1]}
+        if(this.map[this.selectedColumns[i]].isRange && this.map[this.selectedColumns[i]].endColumn == selectedColumnEnd){
+          this.map[this.selectedColumns[i]] = {isRange:true, endColumn: this.selectedColumns[index-1]}
           continue;
         }
         break;
@@ -152,6 +151,9 @@ export class PlateSelectorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
+    if(!this.wellsArrangement[this.wells]){this.wells = 96;}
+
     this.wellColumns= this.range(1, this.wellsArrangement[this.wells].column);
     this.wellRows = this.alphabets.slice(0,this.wellsArrangement[this.wells].row);
   }
