@@ -58,20 +58,44 @@ export class PlateSelectorComponent implements OnInit {
       this.errorMessage = "Input values must be between 0 and number of columns";
     }else{
       this.selectedColumns = selectedColumns;
+      this.columnsInput.control.setValue(this.sortInput(this.selectedColumns.slice()));
     }
     console.log(this.map)
   }
+
+  sortInput(arr: number[]) {
+    let sortArray = arr.sort(function(a, b) {return a - b;});
+    let result = []
+    for (let i = 0; i<sortArray.length; i++ ){
+      let element = sortArray[i]
+      if(this.map[element] && this.map[element].isRange){
+        let start = element;
+        let end:any = this.map[element].endNum;
+        sortArray.splice(i,(end-start))
+        if(start == end){
+          result.push(String(start));
+          this.map[start] = {isRange:false};
+          continue;
+        }
+        result.push(String(start)+'-'+end);
+        continue;
+      }
+      result.push(String(element));
+    }
+    return result.join(',');
+  }
+
   hasVaildInputs(arr: number[]){
     return arr.some((element, index) => {
       return element < 1 || element > this.wellColumns.length;
     });
   }
+
   hasDuplicates(arr:number[]) {
     return arr.some((element, index) => {
       return arr.indexOf(element) !== index
     });
   }
-
 
   range(start: number, end: number) {
     return [...Array(1+end-start).keys()].map(v => start+v)

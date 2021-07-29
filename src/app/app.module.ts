@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 
@@ -15,6 +15,7 @@ import { PlateSelectorComponent } from './plate-selector/plate-selector.componen
     BrowserModule,
     FormsModule
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
   providers: [],
   bootstrap: [AppComponent]
 })
