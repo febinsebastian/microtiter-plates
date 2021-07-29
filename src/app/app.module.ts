@@ -1,21 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { MicrotiterPlateModule } from './microtiter-plate.module';
 
 
 import { AppComponent } from './app.component';
-import { PlateSelectorComponent } from './plate-selector/plate-selector.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PlateSelectorComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    MicrotiterPlateModule
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],
   bootstrap: [AppComponent]
 })
