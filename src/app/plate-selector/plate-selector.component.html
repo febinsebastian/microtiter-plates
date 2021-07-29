@@ -27,7 +27,7 @@
                 </tr>
                 <tr *ngFor="let row of wellRows">
                     <th>{{row}}</th>
-                    <td *ngFor="let column of wellColumns" class="text-center"><span class="well" 
+                    <td *ngFor="let column of wellColumns" class="text-center"><span class="well"
                         [ngClass]="{'selected':selectedColumns.indexOf(column) > -1}"
                         (click)="selectWell(column)"></span></td>
                 </tr>

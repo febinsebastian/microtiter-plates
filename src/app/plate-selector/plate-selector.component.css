@@ -1,6 +1,7 @@
 .well {
-    width: 2.3rem;
-    height: 2.3rem;
+    width: 100%;
+    height: auto;
+    padding-top: 90%;
     border-radius: 50%;
     background-color: #fff;
     border: 1px solid #000;
@@ -15,13 +16,9 @@
     animation: fill 2s;
     background-color: #28a745;
 }
-.row-label {
-    width: 2.3rem;
-    height: 2.3rem;
-    border-radius: 50%;
-    display: inline-block;
-}
 .well-table {
+    table-layout: fixed;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -42,6 +39,7 @@
     position: relative;
 }
 .well-wrapper .well-window {
+    width: 30rem;
     border: 1px solid #e4e4e4;
     border-radius: .5rem; 
     padding: 1rem;
