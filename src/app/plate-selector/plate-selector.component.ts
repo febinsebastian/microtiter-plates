@@ -100,6 +100,53 @@ export class PlateSelectorComponent implements OnInit {
   range(start: number, end: number) {
     return [...Array(1+end-start).keys()].map(v => start+v)
   }
+
+    selectWell(selectedColumn:number){
+    let index = this.selectedColumns.indexOf(selectedColumn);
+    let updateEndColumn = false;
+    let selectedColumnEnd;
+    if(this.map[selectedColumn] && this.map[selectedColumn].isRange){
+      let endNum = this.map[selectedColumn].endNum;
+      let nextColumn = this.selectedColumns[index+1];
+      selectedColumnEnd = this.map[selectedColumn].endNum;
+      for (let key in this.map) {
+        if(selectedColumn == Number(key)){
+          this.map[nextColumn] = {isRange:true, endNum: endNum}
+          break;
+        }else if(selectedColumn >= Number(key)){
+          updateEndColumn = true;
+          if(endNum == nextColumn && selectedColumn != endNum) {
+            this.map[nextColumn] = {isRange:false};
+            break;
+          }else if(selectedColumn == endNum){break;}
+          else if(selectedColumn < endNum){
+            this.map[nextColumn] = {isRange:true, endNum: selectedColumnEnd};
+          }else{
+            updateEndColumn = false;
+            this.map[nextColumn] = {isRange:true, endNum: endNum};
+          }
+          break
+        }
+      }
+    }
+    console.log(this.map)
+    if(index == -1){
+      this.selectedColumns.push(selectedColumn);
+    }else{
+      this.selectedColumns.splice(index,1);
+      delete this.map[selectedColumn];
+    }
+    if(updateEndColumn){
+      for (let i=index-1; i>=0; i--) {
+        if(this.map[this.selectedColumns[i]].isRange && this.map[this.selectedColumns[i]].endNum == selectedColumnEnd){
+          this.map[this.selectedColumns[i]] = {isRange:true, endNum: this.selectedColumns[index-1]}
+          continue;
+        }
+        break;
+      }
+    }
+    this.columnsInput.control.setValue(this.sortInput(this.selectedColumns.slice()))
+  }
   
 
   constructor() { }

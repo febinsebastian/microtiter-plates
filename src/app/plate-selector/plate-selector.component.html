@@ -10,29 +10,30 @@
                     class="form-control" ngModel
                     (blur)="validateInput()" #columns="ngModel" 
                     pattern="^\d+(?:-\d+)?(?:,\h*\d+(?:-\d+)?)*$">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" (click)="openWindow = !openWindow">{{openWindow? "Close": "Open"}}</button>
-                </div>
+	            <div class="input-group-append">
+	                <button class="btn btn-outline-secondary" type="button" (click)="openWindow = !openWindow">{{openWindow? "Close": "Open"}}</button>
+	            </div>
             </div>
             <span class="help-block text-danger" *ngIf="!columns.valid && columns.touched">Wrong Format</span>
             <span class="help-block text-danger" *ngIf="inputError">{{errorMessage}}</span>
         </div>
     </form>
     <div class="well-window" [ngClass]="{'open': this.openWindow }">
-            <table class="well-table">
-                <tbody>
-                    <tr>
-                        <th></th>
-                        <th *ngFor="let columnNumber of wellColumns" class="text-center">{{columnNumber}}</th>
-                    </tr>
-                    <tr *ngFor="let row of wellRows">
-                        <th>{{row}}</th>
-                        <td *ngFor="let column of wellColumns" class="text-center"><span class="well" 
-                            [ngClass]="{'selected':selectedColumns.indexOf(column) > -1}"></span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <table class="well-table">
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th *ngFor="let columnNumber of wellColumns" class="text-center">{{columnNumber}}</th>
+                </tr>
+                <tr *ngFor="let row of wellRows">
+                    <th>{{row}}</th>
+                    <td *ngFor="let column of wellColumns" class="text-center"><span class="well" 
+                        [ngClass]="{'selected':selectedColumns.indexOf(column) > -1}"
+                        (click)="selectWell(column)"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </div>
 
