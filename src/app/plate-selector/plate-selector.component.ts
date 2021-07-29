@@ -31,25 +31,30 @@ export class PlateSelectorComponent implements OnInit {
   openWindow = false;
 
   validateInput(){
-    let column = this.columnsInput.value.split(",");
+    this.selectedColumns = [];
+    let column = this.columnsInput.value? this.columnsInput.value.split(","):'';
     let selectedColumns = [];
     this.map = {};
     this.inputError = false;
     this.errorMessage = '';
+
     for(let i=0; i<column.length; i++){
       if ( column[i].indexOf('-') > -1 ) {
         let start = Number(column[i].split("-")[0]);
         let end = Number(column[i].split("-")[1]);
         let numbers = this.range(start,end);
         selectedColumns.push(...numbers);
-        //this.map[start] = {isRange: true, endColumn: end}
         numbers.map(n => {this.map[n] = {isRange: true, endColumn: end};});
         continue;
       }
       this.map[column[i]] = {isRange: false};
       selectedColumns.push(Number(column[i]));
     }
-    if(this.hasDuplicates(selectedColumns)){
+
+    if(!this.columnsInput.control.valid || column == ''){
+      return;
+    }
+    else if(this.hasDuplicates(selectedColumns)){
       this.inputError = true;
       this.errorMessage = "Duplicate inputs";
     }else if(this.hasVaildInputs(selectedColumns)){
@@ -61,7 +66,7 @@ export class PlateSelectorComponent implements OnInit {
     }
     console.log(this.map)
   }
-
+  //sort the inputs
   sortInput(arr: number[]) {
     let sortArray = arr.sort(function(a, b) {return a - b;});
     let result = []
@@ -83,13 +88,13 @@ export class PlateSelectorComponent implements OnInit {
     }
     return result.join(',');
   }
-
+  //check the inputs are valid and within the limites of columns
   hasVaildInputs(arr: number[]){
     return arr.some((element, index) => {
       return element < 1 || element > this.wellColumns.length;
     });
   }
-
+  //check if there is any inputs are repeating
   hasDuplicates(arr:number[]) {
     return arr.some((element, index) => {
       return arr.indexOf(element) !== index
@@ -100,7 +105,7 @@ export class PlateSelectorComponent implements OnInit {
     return [...Array(1+end-start).keys()].map(v => start+v)
   }
 
-    selectWell(selectedColumn:number){
+  selectWell(selectedColumn:number){
     let index = this.selectedColumns.indexOf(selectedColumn);
     let updateEndColumn = false;
     let selectedColumnEnd;
@@ -117,7 +122,8 @@ export class PlateSelectorComponent implements OnInit {
           if(endColumn == nextColumn && selectedColumn != endColumn) {
             this.map[nextColumn] = {isRange:false};
             break;
-          }else if(selectedColumn == endColumn){break;}
+          }
+          else if(selectedColumn == endColumn){break;}
           else if(selectedColumn < endColumn){
             this.map[nextColumn] = {isRange:true, endColumn: selectedColumnEnd};
           }else{

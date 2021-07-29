@@ -14,7 +14,7 @@
 	                <button class="btn btn-outline-secondary" type="button" (click)="openWindow = !openWindow">{{openWindow? "Close": "Open"}}</button>
 	            </div>
             </div>
-            <span class="help-block text-danger" *ngIf="!columns.valid && columns.touched">Wrong Format</span>
+            <span class="help-block text-danger" *ngIf="!columns.valid && columns.touched">Inputs should be separated by commas or ranges (Eg: 3-6)</span>
             <span class="help-block text-danger" *ngIf="inputError">{{errorMessage}}</span>
         </div>
     </form>
