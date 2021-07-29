@@ -1,5 +1,5 @@
 <div class="row">
-   <div class="col">
+   <div class="col well-wrapper">
     <form>
         <div class="form-group">
             <label for="columns">Columns</label>
@@ -18,6 +18,21 @@
             <span class="help-block text-danger" *ngIf="inputError">{{errorMessage}}</span>
         </div>
     </form>
+    <div class="well-window" [ngClass]="{'open': this.openWindow }">
+            <table class="well-table">
+                <tbody>
+                    <tr>
+                        <th></th>
+                        <th *ngFor="let columnNumber of wellColumns" class="text-center">{{columnNumber}}</th>
+                    </tr>
+                    <tr *ngFor="let row of wellRows">
+                        <th>{{row}}</th>
+                        <td *ngFor="let column of wellColumns" class="text-center"><span class="well" 
+                            [ngClass]="{'selected':selectedColumns.indexOf(column) > -1}"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 </div>
 </div>
 

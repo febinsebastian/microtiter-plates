@@ -15,7 +15,7 @@ import { PlateSelectorComponent } from './plate-selector/plate-selector.componen
     BrowserModule,
     FormsModule
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],
   bootstrap: [AppComponent]
 })
