@@ -1,0 +1,23 @@
+<div class="row">
+   <div class="col">
+    <form>
+        <div class="form-group">
+            <label for="columns">Columns</label>
+            <div class="input-group">
+                <input type="text" 
+                    id="columns"
+                    name="columns"
+                    class="form-control" ngModel
+                    (blur)="validateInput()" #columns="ngModel" 
+                    pattern="^\d+(?:-\d+)?(?:,\h*\d+(?:-\d+)?)*$">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="openWindow = !openWindow">{{openWindow? "Close": "Open"}}</button>
+                </div>
+            </div>
+            <span class="help-block text-danger" *ngIf="!columns.valid && columns.touched">Wrong Format</span>
+            <span class="help-block text-danger" *ngIf="inputError">{{errorMessage}}</span>
+        </div>
+    </form>
+</div>
+</div>
+
