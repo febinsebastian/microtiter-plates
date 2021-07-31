@@ -40,6 +40,8 @@
 }
 .well-wrapper .well-window {
     width: 30rem;
+    -webkit-box-shadow: 0 0 10px #dedede;
+    box-shadow: 0 0 10px #dedede;
     border: 1px solid #e4e4e4;
     border-radius: .5rem; 
     padding: 1rem;
